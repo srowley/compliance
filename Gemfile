@@ -12,6 +12,7 @@ gem 'sass-rails', '~> 4.0.0'
 # Test stuff
 group :development, :test do
   gem 'rspec-rails', '~> 2.14'
+  gem 'factory_girl_rails', '~> 4.3.0'
 end
 
 # Use Uglifier as compressor for JavaScript assets
