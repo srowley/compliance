@@ -28,4 +28,8 @@ describe Task do
     expect(FactoryGirl.build(:task, completed_date: nil)).to be_valid
   end
 
+  it "should be invalid if the completed date is after the current date" do
+    expect(FactoryGirl.build(:task, completed_date: Time.now + 1.day)).to_not be_valid
+  end
+
 end
