@@ -15,6 +15,10 @@ group :development, :test do
   gem 'factory_girl_rails', '~> 4.3.0'
 end
 
+# Advanced date/time handling
+gem 'validates_timeliness', '~> 3.0' #ActiveRecord validations for dates
+# gem 'ice_cube' #library for handling recurring dates, here as a reminder for later
+
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 
