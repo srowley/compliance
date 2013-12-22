@@ -16,4 +16,8 @@ describe Task do
     expect(@valid_task).to be_valid
   end
 
+  it "should be valid even without a completed date" do
+    expect(FactoryGirl.build(:task, completed_date: nil)).to be_valid
+  end
+
 end
