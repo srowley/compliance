@@ -15,6 +15,10 @@ group :development, :test do
   gem 'factory_girl_rails', '~> 4.3.0'
 end
 
+# Use HAML
+gem 'haml'
+gem 'haml-rails'
+
 # Advanced date/time handling
 gem 'validates_timeliness', '~> 3.0' #ActiveRecord validations for dates
 # gem 'ice_cube' #library for handling recurring dates, here as a reminder for later
