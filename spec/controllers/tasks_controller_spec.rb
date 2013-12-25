@@ -44,9 +44,42 @@ describe TasksController do
 
   describe 'PATCH #update' do
 
-    it 'returns an updated Task object'
+    context 'when the updated attributes are valid' do
+      before(:each) do
+        @task = create(:task, agency: 'old agency')
+        patch :update, id: @task, task: attributes_for(:task, agency: 'new agency')
+        @task.reload
+      end
 
-    it 'renders the index template'
+      it 'updates the attributes for the edited task' do
+        expect(@task.agency).to eq('new agency')
+      end
+
+      it 'redirects to the show template' do
+        expect(response).to redirect_to @task
+      end
+    end
+
+    context 'when the updated attributes are not valid' do
+      before(:each) do
+        @task = create(:task, agency: 'old agency', facility: 'old facility')
+        patch :update, id: @task, task: attributes_for(:task, agency: nil, facility: 'new facility')
+        @task.reload
+      end
+
+      it 'does not update the record' do
+        expect(@task.agency).to eq('old agency')
+        expect(@task.facility).to_not eq('new facility')
+      end
+
+      it 're-renders the edit template' do
+        expect(response).to render_template :edit
+      end
+
+      it 'flashes an alert message' do
+        expect(flash[:alert]).to eq('Update invalid. Record not saved.')
+      end
+    end
   end
 
   describe 'POST #create' do
