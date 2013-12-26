@@ -55,7 +55,7 @@ describe TasksController do
         expect(@task.agency).to eq('new agency')
       end
 
-      it 'redirects to the show template' do
+      it 'redirects to task#show' do
         expect(response).to redirect_to @task
       end
     end
@@ -95,7 +95,7 @@ describe TasksController do
         expect(flash[:notice]).to eq('Record saved successfully.')
       end
 
-      it 'renders the index template' do
+      it 'redirects to task#show' do
         post :create, task: attributes_for(:task)
         expect(response).to redirect_to tasks_path
       end
@@ -112,7 +112,7 @@ describe TasksController do
         expect(flash[:alert]).to eq('Data invalid. Record not saved.')
       end
 
-      it 'redirects to the new template' do
+      it 'redirects to task#new' do
         post :create, task: attributes_for(:task, agency: nil)
         expect(response).to render_template :new
       end
@@ -120,8 +120,17 @@ describe TasksController do
   end
   
   describe 'DELETE #destroy' do
-    it 'deletes the selected record'
+    before(:each) do
+      @task = create(:task)
+    end
 
-    it 'renders the index template'
+    it 'deletes the selected record' do
+      expect { delete :destroy, id: @task }.to change(Task, :count).by(-1)
+    end
+
+    it 'redirects to tasks#index' do
+      delete :destroy, id: @task
+      expect(response).to redirect_to tasks_path
+    end
   end
 end
