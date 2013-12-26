@@ -13,6 +13,7 @@ gem 'sass-rails', '~> 4.0.0'
 group :development, :test do
   gem 'rspec-rails', '~> 2.14'
   gem 'factory_girl_rails', '~> 4.3.0'
+  gem 'capybara', '~>2.2.0'
 end
 
 # Use HAML

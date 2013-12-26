@@ -1,0 +1,12 @@
+%h1 'All Tasks'
+%table
+  - @tasks.each do |task|
+    %tr
+      %td= task.owner
+      %td= task.agency
+      %td= task.facility
+      %td= link_to task.description, task_path(task)
+      %td= link_to 'Edit', edit_task_path(task)
+      %td= link_to 'Delete', task_path(task), method: :delete
+
+= link_to 'New Task', new_task_path
