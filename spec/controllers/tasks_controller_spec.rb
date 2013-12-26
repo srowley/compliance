@@ -84,18 +84,38 @@ describe TasksController do
 
   describe 'POST #create' do
 
-    context 'when valid date is provided' do
-      it 'flashes a success notice'
+    context 'when valid data is provided' do
+    
+      it 'saves the record' do
+        expect { post :create, task: attributes_for(:task) }.to change(Task, :count).by(1)
+      end
 
-      it 'creates a new record'
+      it 'flashes a success notice' do
+        post :create, task: attributes_for(:task)
+        expect(flash[:notice]).to eq('Record saved successfully.')
+      end
 
-      it 'renders the index template'
+      it 'renders the index template' do
+        post :create, task: attributes_for(:task)
+        expect(response).to redirect_to tasks_path
+      end
     end
 
     context 'when invalid data is provided' do
-      it 'flashes an error message'
 
-      it 'redirects to the new template'
+      it 'does not save the record' do
+        expect { post :create, task: attributes_for(:task, agency: nil) }.to change(Task, :count).by(0)
+      end
+        
+      it 'flashes an error alert' do
+        post :create, task: attributes_for(:task, agency: nil)
+        expect(flash[:alert]).to eq('Data invalid. Record not saved.')
+      end
+
+      it 'redirects to the new template' do
+        post :create, task: attributes_for(:task, agency: nil)
+        expect(response).to render_template :new
+      end
     end
   end
   

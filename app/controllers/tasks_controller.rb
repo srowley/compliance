@@ -22,6 +22,17 @@ class TasksController < ApplicationController
     end
   end
 
+  def create
+    @task = Task.new(task_params)
+    if @task.save
+      flash[:notice] = 'Record saved successfully.'
+      redirect_to tasks_path
+    else
+      flash[:alert] = 'Data invalid. Record not saved.'
+      render 'new'
+    end
+  end
+
   private
 
     def task_params
