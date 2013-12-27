@@ -10,6 +10,10 @@ gem 'sqlite3'
 gem 'sass-rails', '~> 4.0.0'
 
 # Test stuff
+group :development do
+  gem 'guard-rspec', '4.2.0'
+end
+
 group :development, :test do
   gem 'rspec-rails', '~> 2.14'
   gem 'factory_girl_rails', '~> 4.3.0'

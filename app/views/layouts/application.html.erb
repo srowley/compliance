@@ -8,6 +8,7 @@
 </head>
 <body>
 
+<%= content_tag :div, flash[:notice] if flash[:notice]%>
 <%= yield %>
 
 </body>
