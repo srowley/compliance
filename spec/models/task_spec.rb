@@ -6,6 +6,14 @@ describe Task do
     @valid_task = build(:task)
   end
 
+  describe '::search' do
+    it "returns tasks that match the provided due_date" do
+      create(:task, due_date: '2013-01-01')
+      create(:task, due_date: '2014-01-01')
+      expect(Task.search(due_date: '2013-01-01').count).to eq(1)
+    end
+  end
+
   context 'is not valid when' do
 
     [:owner, :agency, :facility, :due_date].each do |attribute|
