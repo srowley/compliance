@@ -7,10 +7,16 @@ describe Task do
   end
 
   describe '::search' do
-    it "returns tasks that match the provided due_date" do
+    it "returns tasks that match the provided due date" do
       create(:task, due_date: '2013-01-01')
       create(:task, due_date: '2014-01-01')
       expect(Task.search(due_date: '2013-01-01').count).to eq(1)
+    end
+
+    it "returns tasks that match the provided completed date" do
+      create(:task, completed_date: '2013-01-01')
+      create(:task, completed_date: nil)
+      expect(Task.search(completed_date: '2013-01-01').count).to eq(1)
     end
   end
 
