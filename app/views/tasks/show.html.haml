@@ -1,0 +1,4 @@
+%ul
+  - @task.attributes.each do |attribute|
+    %li
+      = "#{attribute[0]}: #{attribute[1]}"
