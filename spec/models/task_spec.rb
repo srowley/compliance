@@ -38,4 +38,10 @@ describe Task do
       expect(build(:task, completed_date: nil)).to be_valid
     end
   end
+
+  it "returns a filtered list when given search criteria" do
+    create(:task, due_date: '2013-01-01')
+    create(:task, due_date: '2014-01-01')
+    expect(Task.search(due_date: '2013-01-01').count).to eq(1)
+  end
 end
