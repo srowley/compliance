@@ -6,13 +6,13 @@ Any user can see a list of all tasks
 0.1.1
 Users can filter the list of tasks by due date, completed date
 
-0.2
+0.1.2
 Users can export a .csv file of tasks meeting filter criteria
 
-0.3
+0.2
 Users authenticate with e-mail address and password. Can filter list of tasks to see only those they own.
 
-0.4
+0.3
 Tasks can have users with a "CC:" role.
 An admin role exists. Only users with owner, cc: or admin role can update or delete tasks.
 
