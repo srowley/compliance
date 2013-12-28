@@ -2,6 +2,15 @@ require 'spec_helper'
 
 describe TasksController do
 
+  describe 'GET #search' do
+    it "returns the records that match the given due date" do
+      create(:task, due_date: '2013-01-01')
+      create(:task, due_date: '2014-01-01')
+      get :search, due_date: '2013-01-01'
+      expect(assigns(:tasks)).to eq Task.search(due_date: '2013-01-01')
+    end
+  end
+  
   describe 'GET #index' do
     it 'returns a list of all Task objects' do
       get :index
@@ -40,6 +49,16 @@ describe TasksController do
       get :new
       expect(response).to render_template :new
     end
+  end
+
+  describe 'GET #edit' do
+    
+    it "returns the requested task object" do
+      task = create(:task)
+      get :edit, id: task
+      expect(assigns(:task)).to eq task
+    end
+
   end
 
   describe 'PATCH #update' do

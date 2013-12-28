@@ -1,5 +1,10 @@
 class TasksController < ApplicationController
 
+  def search
+    @tasks = Task.search(params)
+    render 'index'
+  end
+
   def index
     @tasks = Task.all
   end
