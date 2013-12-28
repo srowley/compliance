@@ -43,7 +43,6 @@ feature 'Manage task records' do
     expect{ find("a[href='/tasks/1'][data-method='delete']").click
       }.to change(Task, :count).by(-1)
     expect(page).to_not have_content 'First task'
-    puts page.body
   end
 
 end
