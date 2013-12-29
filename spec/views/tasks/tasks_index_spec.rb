@@ -61,4 +61,8 @@ describe 'tasks/index.html.haml' do
       expect_selector("form input[type='submit'][value='Filter Results']")
     end
   end
+  
+  it "has a link for exporting results to .csv" do
+    expect_selector("a[href='/tasks/export']")
+  end
 end
