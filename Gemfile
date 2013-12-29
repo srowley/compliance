@@ -28,6 +28,9 @@ end
 gem 'haml'
 gem 'haml-rails'
 
+# Authentication/Authorization
+gem 'sorcery', '0.8.2'
+
 # Advanced date/time handling
 gem 'validates_timeliness', '~> 3.0' #ActiveRecord validations for dates
 # gem 'ice_cube' #library for handling recurring dates, here as a reminder for later
