@@ -63,6 +63,6 @@ describe 'tasks/index.html.haml' do
   end
   
   it "has a link for exporting results to .csv" do
-    expect_selector("a[href='/tasks/export']")
+    expect_selector("a[href='/tasks/export.csv']")
   end
 end
