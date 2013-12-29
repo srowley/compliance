@@ -17,6 +17,7 @@ Tasks can have users with a "CC:" role.
 An admin role exists. Only users with owner, cc: or admin role can update or delete tasks.
 
 Future
+Pagination
 Attach files
 Handle recurring tasks
 Attach "reference links" to URLs with notes (e.g. "see section 2.1 of contract linked here")
@@ -24,3 +25,4 @@ Allow contingent dates
 Copy/paste tasks
 Audit trail
 Alerts on changes (submitted, due date/owner changed, deleted)
+Additional fields and/or tags
