@@ -18,8 +18,11 @@ describe 'tasks/index.html.haml' do
     expect_selector("h1", text: 'All Tasks')
   end
 
-  it 'has a task list table' do
-    expect_selector("table")
+  describe 'the task list table' do
+    it 'displays all tasks' do
+      expect_selector("table tr td", text: 'First task')
+      expect_selector("table tr td", text: 'Second task')
+    end
   end
 
   it 'has a link to create a new record' do
@@ -27,11 +30,6 @@ describe 'tasks/index.html.haml' do
   end
 
   describe 'each row in the task list table' do
-
-    it 'lists the descriptive information for each task' do
-      expect_selector("table tr td", text: 'First task')
-      expect_selector("table tr td", text: 'Second task')
-    end 
 
     it 'has a link to show the full record for each task' do
       expect_selector("table tr td a[href='/tasks/#{@first_task.id}']", text: 'First task')
@@ -46,6 +44,21 @@ describe 'tasks/index.html.haml' do
 
     it 'has a link to delete the record for that task' do
       expect_selector("table tr td a[href='/tasks/#{@first_task.id}']", text: 'Delete')
+    end
+  end
+  
+  describe "the filter form" do
+     
+    it "has a field to specify the due date to display" do
+      expect_selector("form input[name='filter[due_date]']")
+    end
+
+    it "has a field to specify the completed date to display" do
+      expect_selector("form input[name='filter[completed_date]']")
+    end
+
+    it "has a button to filter the task list table" do
+      expect_selector("form input[type='submit'][value='Filter Results']")
     end
   end
 end

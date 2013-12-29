@@ -7,7 +7,7 @@ class Task < ActiveRecord::Base
   def self.search(params)	
     result = self.all
     params.each do |field, criteria|
-      if field.match(/due_date|completed_date/) && criteria != nil
+      if field.match(/due_date|completed_date/) && criteria.present?
         result = result.where("DATE(#{field}) = ?", criteria)
       end
     end

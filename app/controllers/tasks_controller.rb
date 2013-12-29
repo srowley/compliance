@@ -1,7 +1,7 @@
 class TasksController < ApplicationController
 
   def search
-    @tasks = Task.search(params)
+    @tasks = Task.search(params['filter'])
     render 'index'
   end
 

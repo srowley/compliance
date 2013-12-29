@@ -1,4 +1,13 @@
 %h1 'All Tasks'
+
+%div
+  = form_tag("/tasks/search", method: "get") do
+    = label_tag('filter[due_date]', "Filter By Due Date")
+    = text_field_tag('filter[due_date]')
+    = label_tag('filter[completed_date]', "Filter By Completed Date")
+    = text_field_tag('filter[completed_date]')
+    = submit_tag("Filter Results")
+    
 %table
   - @tasks.each do |task|
     %tr

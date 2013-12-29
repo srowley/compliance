@@ -6,19 +6,19 @@ describe TasksController do
     it "returns the records that match the given due date" do
       create(:task, due_date: '2013-01-01')
       create(:task, due_date: '2014-01-01')
-      get :search, due_date: '2013-01-01'
-      expect(assigns(:tasks)).to eq Task.search(due_date: '2013-01-01')
+      get :search, 'filter' => { due_date: '2013-01-01' }
+      expect(assigns(:tasks)).to eq Task.search(due_date: '2013-01-01' )
     end
 
     it "returns the records that match the given completed date" do
       create(:task, completed_date: '2012-01-01')
       create(:task, completed_date: '2013-01-01')
-      get :search, completed_date: '2012-01-01'
+      get :search, 'filter' => { completed_date: '2012-01-01' }
       expect(assigns(:tasks)).to eq Task.search(completed_date: '2012-01-01')
     end
 
     it "renders the index template" do
-      get :search, due_date: '2012-01-01'
+      get :search, 'filter' => { due_date: '2012-01-01' }
       expect(response).to render_template :index
     end
   end

@@ -14,10 +14,40 @@ feature 'Manage task records' do
   end
 
   background do
-    @first_task = create(:task, description: "First task")
-    @second_task = create(:task, description: "Second task")
+    @first_task = create(:task, description: "First task", \
+                                due_date: "2013-01-01", \
+                                completed_date: nil)
+    @second_task = create(:task, description: "Second task", \
+                                 due_date: "2014-01-01", \
+                                 completed_date: "2012-01-01")
   end
 
+  scenario 'filter due date' do
+    visit tasks_path
+    fill_in 'filter_due_date', with: '2013-01-01'
+    click_button 'Filter Results'
+    expect(page).to have_content 'First task'
+    expect(page).to_not have_content 'Second task'
+  end
+  
+  scenario 'filter completed date' do
+    visit tasks_path
+    fill_in 'filter_completed_date', with: '2012-01-01'
+    click_button 'Filter Results'
+    expect(page).to have_content 'Second task'
+    expect(page).to_not have_content 'First task'
+  end
+  
+  scenario 'filter both dates' do
+    visit tasks_path
+    fill_in 'filter_due_date', with: '2013-01-01'
+    fill_in 'filter_completed_date', with: '2012-01-01'
+    click_button 'Filter Results'
+    expect(page).to_not have_content 'First task'
+    expect(page).to_not have_content 'Second task'
+  end
+  
+  
   scenario 'view all records' do
     visit tasks_path
     expect(page).to have_content 'First task'
