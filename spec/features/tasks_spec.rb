@@ -24,7 +24,6 @@ feature 'Manage task records' do
 
   scenario 'export all to .csv file' do
     visit tasks_path
-    puts page.html
     find("a[href='/tasks/export.csv']").click
     expect(page).to have_content 'First task,'
     expect(page).to have_content 'Second task,'

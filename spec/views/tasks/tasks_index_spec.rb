@@ -69,9 +69,9 @@ describe 'tasks/index.html.haml' do
       end
     end
     
-    context "when the results are filtered" do
+    context "when the results are filtered (no test, see comments)" do
       it "has filter parameters appended" do
-        puts "no test - can't figure out how to pass params at render time"
+        # can't figure out how to pass params at render time
         # expect_selector("a[href*='/tasks/export.csv?filter']")
       end
     end
