@@ -22,6 +22,24 @@ feature 'Manage task records' do
                                  completed_date: "2012-01-01")
   end
 
+  scenario 'export all to .csv file' do
+    visit tasks_path
+    puts page.html
+    find("a[href='/tasks/export.csv']").click
+    expect(page).to have_content 'First task,'
+    expect(page).to have_content 'Second task,'
+  end
+  
+  scenario 'export filtered to .csv file' do
+    visit tasks_path
+    fill_in 'filter_due_date', with: '2013-01-01'
+    click_button 'Filter Results'
+#    puts page.html
+    find("a[href*='/tasks/export.csv']").click
+    expect(page).to have_content 'First task,'
+    expect(page).to_not have_content 'Second task,'
+  end
+  
   scenario 'filter due date' do
     visit tasks_path
     fill_in 'filter_due_date', with: '2013-01-01'
@@ -46,7 +64,6 @@ feature 'Manage task records' do
     expect(page).to_not have_content 'First task'
     expect(page).to_not have_content 'Second task'
   end
-  
   
   scenario 'view all records' do
     visit tasks_path

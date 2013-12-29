@@ -6,6 +6,23 @@ describe Task do
     @valid_task = build(:task)
   end
 
+  describe '::to_csv' do
+    before(:each) do
+      @urgent_task = create(:task, due_date: '2014-01-01') 
+      @trivial_task = create(:task, due_date: '2200-01-01') 
+    end
+    
+    it 'returns csv formatted text' do
+      expect(Task.to_csv(nil)).to match /2014-01-01/
+      expect(Task.to_csv(nil)).to match /2200-01-01/
+    end
+    
+    it 'applies a supplied filter' do
+      expect(Task.to_csv( { due_date: '2014-01-01' } )).to match /2014-01-01/
+      expect(Task.to_csv( { due_date: '2014-01-01'} )).to_not match /2200-01-01/
+    end    
+  end
+
   describe '::search' do
     it "returns tasks that match the provided due date" do
       create(:task, due_date: '2013-01-01')

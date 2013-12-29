@@ -61,4 +61,20 @@ describe 'tasks/index.html.haml' do
       expect_selector("form input[type='submit'][value='Filter Results']")
     end
   end
+  
+  describe "the export link" do
+    context "when the results are not filtered" do
+      it "has no filter parameters appended" do
+        expect_selector("a[href='/tasks/export.csv']")
+      end
+    end
+    
+    context "when the results are filtered" do
+      it "has filter parameters appended" do
+        puts "no test - can't figure out how to pass params at render time"
+        # expect_selector("a[href*='/tasks/export.csv?filter']")
+      end
+    end
+  end
+  
 end

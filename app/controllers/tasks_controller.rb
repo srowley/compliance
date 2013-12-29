@@ -1,5 +1,12 @@
 class TasksController < ApplicationController
 
+  def export
+    respond_to do |format|
+      format.html
+      format.csv { render text: Task.to_csv(params[:filter]) }
+    end
+  end
+  
   def search
     @tasks = Task.search(params['filter'])
     render 'index'
@@ -54,5 +61,5 @@ class TasksController < ApplicationController
     def task_params
       params.require(:task).permit!
     end
-
+      
 end

@@ -13,7 +13,10 @@ Compliance::Application.routes.draw do
 
   # Example resource route (maps HTTP verbs to controller actions automatically):
       resources :tasks do
-        get 'search', on: :collection
+        collection do
+          get 'search'
+          get 'export'
+        end
       end
   # Example resource route with options:
   #   resources :products do
