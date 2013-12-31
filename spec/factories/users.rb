@@ -8,6 +8,7 @@ FactoryGirl.define do
     username 'jblow'
     email 'Joe.Blow@pocketbookvote.com' 
     salt salt
+    password 'secret'
     crypted_password Sorcery::CryptoProviders::BCrypt.encrypt("secret", salt)
     user_first_name 'Joe'
     user_last_name 'Blow'

@@ -1,5 +1,6 @@
 class TasksController < ApplicationController
-
+  before_action :require_login, only: :index
+  
   def export
     respond_to do |format|
       format.html

@@ -27,9 +27,9 @@ describe UsersController do
         expect(flash[:notice]).to eq('Signed up.')
       end
 
-      it 'redirects to root' do
+      it 'redirects to login page' do
         post :create, user: attributes_for(:user)
-        expect(response).to redirect_to root_url
+        expect(response).to redirect_to login_path
       end
     end
 

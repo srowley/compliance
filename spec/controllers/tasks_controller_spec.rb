@@ -1,7 +1,16 @@
 require 'spec_helper'
 
 describe TasksController do
-
+  
+  before(:each) do
+    @user = create(:user)
+    login_user
+  end
+  
+  after(:each) do
+    logout_user
+  end
+  
   describe 'GET #export' do
     render_views
     

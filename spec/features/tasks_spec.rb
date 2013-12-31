@@ -12,7 +12,16 @@ feature 'Manage task records' do
     select '1', from: 'task_due_date_3i'                                     
     click_button 'Submit'
   end
-
+   
+  before(:each) do
+    @user = create(:user)
+    login_user_post(@user.username, 'secret')
+  end
+  
+  after(:each) do
+    logout_user_get
+  end
+  
   background do
     @first_task = create(:task, description: "First task", \
                                 due_date: "2013-01-01", \

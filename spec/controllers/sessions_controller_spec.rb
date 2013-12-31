@@ -64,8 +64,8 @@ describe SessionsController do
       expect(flash[:notice]).to eq("Logged out.")
     end
     
-    it 'redirects to the root url' do
-      expect(response).to redirect_to root_url
+    it 'redirects to the login page' do
+      expect(response).to redirect_to login_path
     end
   end
 end
