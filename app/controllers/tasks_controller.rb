@@ -34,7 +34,7 @@ class TasksController < ApplicationController
       flash[:notice] = 'Record updated successfully.'
       redirect_to task_path(@task) 
     else
-      flash[:alert] = 'Update invalid. Record not saved.'
+      flash.now.alert = 'Update invalid. Record not saved.'
       render 'edit'
     end
   end
@@ -45,7 +45,7 @@ class TasksController < ApplicationController
       flash[:notice] = 'Record saved successfully.'
       redirect_to tasks_path
     else
-      flash[:alert] = 'Data invalid. Record not saved.'
+      flash.now.alert = 'Data invalid. Record not saved.'
       render 'new'
     end
   end
