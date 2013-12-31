@@ -11,7 +11,7 @@ gem 'sass-rails', '~> 4.0.0'
 
 # Test stuff
 group :development do
-  gem 'guard-rspec', '4.2.0'
+  gem 'guard-rspec', '~>4.2.3'
 end
 
 group :development, :test do
@@ -29,7 +29,8 @@ gem 'haml'
 gem 'haml-rails'
 
 # Authentication/Authorization
-gem 'sorcery', '0.8.2'
+gem 'sorcery', '~>0.8.2'
+gem 'rolify', '~>3.2'
 
 # Advanced date/time handling
 gem 'validates_timeliness', '~> 3.0' #ActiveRecord validations for dates
