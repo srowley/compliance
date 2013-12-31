@@ -53,5 +53,8 @@ RSpec.configure do |config|
 
   # Include Factory Girl syntax to avoid namespacing FactoryGirl calls
   config.include FactoryGirl::Syntax::Methods
+  
+  # Get #login_user and #logout_user methods for Sorcery
+  config.include Sorcery::TestHelpers::Rails
 
 end
