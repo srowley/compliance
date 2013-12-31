@@ -10,7 +10,7 @@ feature 'Manage users' do
     fill_in 'user_password', with: 'secret'
     click_button 'Sign Up'
   end
-  
+    
   scenario 'add a new user' do
     visit signup_path
     expect{ fill_in_form }.to change(User, :count).by(1)
