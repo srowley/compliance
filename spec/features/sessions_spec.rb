@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'Log in and out' do
+feature 'Authentication' do
   
   scenario "Log in and then log out" do
     @user = create(:user)
@@ -9,8 +9,10 @@ feature 'Log in and out' do
     fill_in 'password', with: 'secret'
     click_button 'Log In'
     expect(page).to have_content "Logged in."
+    expect(page).to have_content "Log Out"
     visit logout_path
     expect(page).to have_content "Logged out."
+    expect(page).to have_content "Log In"
   end
   
 end

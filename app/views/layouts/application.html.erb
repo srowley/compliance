@@ -8,6 +8,7 @@
 </head>
 <body>
 
+<%= logged_in? ? link_to("Log Out", logout_path) : link_to("Log In", login_path)%>
 <%= content_tag :div, flash[:notice] if flash[:notice]%>
 <%= yield %>
 
