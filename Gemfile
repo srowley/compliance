@@ -30,7 +30,7 @@ gem 'haml-rails'
 
 # Authentication/Authorization
 gem 'sorcery', '~>0.8.2'
-gem 'rolify', '~>3.2'
+gem 'rolify', git: 'git://github.com/EppO/rolify.git'
 
 # Advanced date/time handling
 gem 'validates_timeliness', '~> 3.0' #ActiveRecord validations for dates
