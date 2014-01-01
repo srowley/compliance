@@ -16,14 +16,14 @@ describe TasksController do
     
     before(:each) do
       create(:task, due_date: '2013-01-01')
-      create(:task, due_date: '2014-01-01')
+      create(:task, due_date: '2015-01-01')
     end
     
     context "when all records are displayed" do
       it "exports all records to csv" do
         get :export, :format => 'csv'
         expect(response.body).to match /2013-01-01/
-        expect(response.body).to match /2014-01-01/
+        expect(response.body).to match /2015-01-01/
       end
     end
     
@@ -31,7 +31,7 @@ describe TasksController do
       it "exports only filtered records to csv" do
         get :export, { :format => 'csv', 'filter' => { due_date: '2013-01-01' } }
         expect(response.body).to match /2013-01-01/
-        expect(response.body).to_not match /2014-01-01/
+        expect(response.body).to_not match /2015-01-01/
       end
     end
   end
