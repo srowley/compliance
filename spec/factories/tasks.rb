@@ -15,8 +15,8 @@ FactoryGirl.define do
         user_id nil
       end
     
-      after(:create) do |task, user_id|
-        User.find(user_id).add_role :owner, task
+      after(:create) do |task, vars|
+        User.find(vars.user_id).add_role :owner, task
       end
     end
   
