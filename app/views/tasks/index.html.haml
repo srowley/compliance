@@ -1,7 +1,7 @@
 %h1 'All Tasks'
 
 %div
-  = form_tag("/tasks/search", method: "get") do
+  = form_tag("/tasks/filter", method: "get") do
     = label_tag('filter[due_date]', "Filter By Due Date")
     = text_field_tag('filter[due_date]')
     = label_tag('filter[completed_date]', "Filter By Completed Date")

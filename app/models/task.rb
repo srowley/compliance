@@ -6,7 +6,7 @@ class Task < ActiveRecord::Base
  
   validates_date :completed_date, allow_nil: true, :on_or_before => lambda { Date.current }
 
-  def self.search(params)	
+  def self.filter(params)	
     result = self.all
     params.each do |field, criteria|
       if field.match(/due_date|completed_date/) && criteria.present?
@@ -17,7 +17,7 @@ class Task < ActiveRecord::Base
   end
   
   def self.to_csv(params)
-    tasks = params.nil? ? self.all : self.search(params)
+    tasks = params.nil? ? self.all : self.filter(params)
     CSV.generate do |csv|
       csv << column_names
       tasks.each do |task|

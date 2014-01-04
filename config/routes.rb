@@ -21,7 +21,7 @@ Compliance::Application.routes.draw do
   
   resources :tasks do
     collection do
-      get 'search'
+      get 'filter'
       get 'export'
     end
   end

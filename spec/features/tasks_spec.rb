@@ -15,20 +15,24 @@ feature 'Manage task records' do
    
   before(:each) do
     @user = create(:user)
+
+    @first_task = create(:task, \
+                                 description: "First task", \
+                                 due_date: "2013-01-01", \
+                                 completed_date: nil)
+  
+    @second_task = create(:task, \
+                                 description: "Second task", \
+                                 due_date: "2014-01-01", \
+                                 completed_date: "2012-01-01")
+    
+    @user.add_role :owner, @first_task
+    
     login_user_post(@user.username, 'secret')
   end
   
   after(:each) do
     logout_user_get
-  end
-  
-  background do
-    @first_task = create(:task, description: "First task", \
-                                due_date: "2013-01-01", \
-                                completed_date: nil)
-    @second_task = create(:task, description: "Second task", \
-                                 due_date: "2014-01-01", \
-                                 completed_date: "2012-01-01")
   end
 
   scenario 'export all to .csv file' do
@@ -42,35 +46,42 @@ feature 'Manage task records' do
     visit tasks_path
     fill_in 'filter_due_date', with: '2013-01-01'
     click_button 'Filter Results'
-#    puts page.html
     find("a[href*='/tasks/export.csv']").click
     expect(page).to have_content 'First task,'
     expect(page).to_not have_content 'Second task,'
   end
+  describe "Filtering" do
+    scenario 'by due date' do
+      visit tasks_path
+      fill_in 'filter_due_date', with: '2013-01-01'
+      click_button 'Filter Results'
+      expect(page).to have_content 'First task'
+      expect(page).to_not have_content 'Second task'
+   end
   
-  scenario 'filter due date' do
-    visit tasks_path
-    fill_in 'filter_due_date', with: '2013-01-01'
-    click_button 'Filter Results'
-    expect(page).to have_content 'First task'
-    expect(page).to_not have_content 'Second task'
-  end
+    scenario 'by completed date' do
+      visit tasks_path
+      fill_in 'filter_completed_date', with: '2012-01-01'
+      click_button 'Filter Results'
+      expect(page).to have_content 'Second task'
+      expect(page).to_not have_content 'First task'
+    end
   
-  scenario 'filter completed date' do
-    visit tasks_path
-    fill_in 'filter_completed_date', with: '2012-01-01'
-    click_button 'Filter Results'
-    expect(page).to have_content 'Second task'
-    expect(page).to_not have_content 'First task'
-  end
-  
-  scenario 'filter both dates' do
-    visit tasks_path
-    fill_in 'filter_due_date', with: '2013-01-01'
-    fill_in 'filter_completed_date', with: '2012-01-01'
-    click_button 'Filter Results'
-    expect(page).to_not have_content 'First task'
-    expect(page).to_not have_content 'Second task'
+    scenario 'by due and completed dates' do
+      visit tasks_path
+      fill_in 'filter_due_date', with: '2013-01-01'
+      fill_in 'filter_completed_date', with: '2012-01-01'
+      click_button 'Filter Results'
+      expect(page).to_not have_content 'First task'
+      expect(page).to_not have_content 'Second task'
+    end
+    
+    scenario 'by owner' do
+      create(:user, username: "jane").add_role :owner, @second_task
+      visit tasks_path
+      expect(page).to have_content 'First task'
+      expect(page).to_not have_content 'Second task'
+    end
   end
   
   scenario 'view all records' do

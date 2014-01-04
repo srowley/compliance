@@ -5,62 +5,64 @@ describe TasksController do
   before(:each) do
     @user = create(:user)
     login_user
+    create(:task_with_owner, due_date: '2013-01-01', user: @user)
+    create(:task_with_owner, due_date: '2015-01-01', user: @user)
+    create(:task, due_date: '2017-01-01')
   end
   
   after(:each) do
     logout_user
   end
-  
+ # What do I want this to do?
+ # Filter based on what's shown
+ # Default to showing only tasks where user has role
+ # Export whatever screen is showing
+ 
   describe 'GET #export' do
     render_views
     
-    before(:each) do
-      create(:task, due_date: '2013-01-01')
-      create(:task, due_date: '2015-01-01')
-    end
-    
-    context "when all records are displayed" do
+    context "when records are not filtered" do
       it "exports all records to csv" do
         get :export, :format => 'csv'
         expect(response.body).to match /2013-01-01/
         expect(response.body).to match /2015-01-01/
+        expect(response.body).to match /2016-01-01/
       end
     end
     
-    context "when filtered records are displayed" do
+    context "when records are filtered" do
       it "exports only filtered records to csv" do
-        get :export, { :format => 'csv', 'filter' => { due_date: '2013-01-01' } }
-        expect(response.body).to match /2013-01-01/
-        expect(response.body).to_not match /2015-01-01/
+        get :export, { :format => 'csv', 'filter' => { due_date: '2015-01-01', role: :owner } }
+        expect(response.body).to match /2015-01-01/
+        expect(response.body).to_not match /2013-01-01/
+        expect(response.body).to_not match /2016-01-01/
       end
     end
   end
       
-  describe 'GET #search' do
-    it "returns the records that match the given due date" do
-      create(:task, due_date: '2013-01-01')
-      create(:task, due_date: '2014-01-01')
-      get :search, 'filter' => { due_date: '2013-01-01' }
+  describe 'GET #filter' do
+    it "returns the records that match a single filter criteria" do
+      get :filter, 'filter' => { due_date: '2013-01-01' }
       expect(assigns(:tasks)).to eq Task.search(due_date: '2013-01-01' )
     end
 
-    it "returns the records that match the given completed date" do
+    it "returns the records that match multiple filter criteria" do
       create(:task, completed_date: '2012-01-01')
       create(:task, completed_date: '2013-01-01')
-      get :search, 'filter' => { completed_date: '2012-01-01' }
+      get :filter, 'filter' => { completed_date: '2012-01-01' }
       expect(assigns(:tasks)).to eq Task.search(completed_date: '2012-01-01')
     end
 
     it "renders the index template" do
-      get :search, 'filter' => { due_date: '2012-01-01' }
+      get :filter, 'filter' => { due_date: '2012-01-01' }
       expect(response).to render_template :index
     end
   end
   
   describe 'GET #index' do
-    it 'returns a list of all Task objects' do
+    it 'returns a list of all Task objects for which the current user is the owner' do
       get :index
-      expect(assigns(:tasks)).to eq Task.all
+      expect(assigns(:tasks)).to eq Task.with_role(:owner, @user)
     end
 
     it 'renders the index template' do

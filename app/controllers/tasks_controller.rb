@@ -7,13 +7,13 @@ class TasksController < ApplicationController
     end
   end
   
-  def search
-    @tasks = Task.search(params['filter'])
+  def filter 
+    @tasks = Task.filter(params['filter'])
     render 'index'
   end
 
   def index
-    @tasks = Task.all
+    @tasks = Task.with_role :owner, current_user
   end
 
   def show
