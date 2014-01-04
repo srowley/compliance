@@ -12,13 +12,12 @@ FactoryGirl.define do
     
     factory :task_with_owner do
       ignore do
-        user_id nil
+        user nil
       end
     
-      after(:create) do |task, vars|
-        User.find(vars.user_id).add_role :owner, task
+      after(:create) do |task, transients|
+        transients.user.add_role :owner, task
       end
     end
-  
   end
 end
