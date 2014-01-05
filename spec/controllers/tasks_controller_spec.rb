@@ -7,7 +7,7 @@ describe TasksController do
     login_user
     create(:task_with_owner, due_date: '2013-01-01', user: @user)
     create(:task_with_owner, due_date: '2015-01-01', user: @user)
-    create(:task, due_date: '2017-01-01')
+    create(:task, due_date: '2016-01-01')
   end
   
   after(:each) do
@@ -32,7 +32,7 @@ describe TasksController do
     
     context "when records are filtered" do
       it "exports only filtered records to csv" do
-        get :export, { :format => 'csv', 'filter' => { due_date: '2015-01-01', role: :owner } }
+        get :export, { :format => 'csv', 'filter' => { due_date: '2015-01-01' } }
         expect(response.body).to match /2015-01-01/
         expect(response.body).to_not match /2013-01-01/
         expect(response.body).to_not match /2016-01-01/
@@ -43,14 +43,14 @@ describe TasksController do
   describe 'GET #filter' do
     it "returns the records that match a single filter criteria" do
       get :filter, 'filter' => { due_date: '2013-01-01' }
-      expect(assigns(:tasks)).to eq Task.search(due_date: '2013-01-01' )
+      expect(assigns(:tasks)).to eq Task.filter(due_date: '2013-01-01' )
     end
 
     it "returns the records that match multiple filter criteria" do
       create(:task, completed_date: '2012-01-01')
       create(:task, completed_date: '2013-01-01')
       get :filter, 'filter' => { completed_date: '2012-01-01' }
-      expect(assigns(:tasks)).to eq Task.search(completed_date: '2012-01-01')
+      expect(assigns(:tasks)).to eq Task.filter(completed_date: '2012-01-01')
     end
 
     it "renders the index template" do
@@ -60,9 +60,9 @@ describe TasksController do
   end
   
   describe 'GET #index' do
-    it 'returns a list of all Task objects for which the current user is the owner' do
+    it 'returns a list of all Task objects' do
       get :index
-      expect(assigns(:tasks)).to eq Task.with_role(:owner, @user)
+      expect(assigns(:tasks)).to eq Task.all
     end
 
     it 'renders the index template' do
@@ -150,20 +150,24 @@ describe TasksController do
   end
 
   describe 'POST #create' do
+    before(:each) do
+      user = create(:user, username: 'jane')
+      @params = { "task" => attributes_for(:task), "role" => { 'owner' => user.username } }
+    end 
 
     context 'when valid data is provided' do
     
       it 'saves the record' do
-        expect { post :create, task: attributes_for(:task) }.to change(Task, :count).by(1)
+        expect { post :create, @params }.to change(Task, :count).by(1)
       end
 
       it 'flashes a success notice' do
-        post :create, task: attributes_for(:task)
+        post :create, @params
         expect(flash[:notice]).to eq('Record saved successfully.')
       end
 
       it 'redirects to task#show' do
-        post :create, task: attributes_for(:task)
+        post :create, @params 
         expect(response).to redirect_to tasks_path
       end
     end

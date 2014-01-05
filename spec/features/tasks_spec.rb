@@ -10,6 +10,7 @@ feature 'Manage task records' do
     select '2015', from: 'task_due_date_1i'                                  
     select 'January', from: 'task_due_date_2i'                               
     select '1', from: 'task_due_date_3i'                                     
+    select @user.username, from: 'role_owner'
     click_button 'Submit'
   end
    
@@ -25,8 +26,6 @@ feature 'Manage task records' do
                                  description: "Second task", \
                                  due_date: "2014-01-01", \
                                  completed_date: "2012-01-01")
-    
-    @user.add_role :owner, @first_task
     
     login_user_post(@user.username, 'secret')
   end
@@ -50,6 +49,7 @@ feature 'Manage task records' do
     expect(page).to have_content 'First task,'
     expect(page).to_not have_content 'Second task,'
   end
+
   describe "Filtering" do
     scenario 'by due date' do
       visit tasks_path
@@ -77,10 +77,12 @@ feature 'Manage task records' do
     end
     
     scenario 'by owner' do
-      create(:user, username: "jane").add_role :owner, @second_task
+      @user.add_role :owner, @second_task
       visit tasks_path
-      expect(page).to have_content 'First task'
-      expect(page).to_not have_content 'Second task'
+      check 'filter[owner]'
+      click_button 'Filter Results'
+      expect(page).to_not have_content 'First task'
+      expect(page).to have_content 'Second task'
     end
   end
   

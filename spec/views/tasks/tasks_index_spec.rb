@@ -57,6 +57,10 @@ describe 'tasks/index.html.haml' do
       expect_selector("form input[name='filter[completed_date]']")
     end
 
+    it 'has a check box to toggle filtering by owner' do
+      expect_selector("form input[name='filter[owner]'][type='checkbox']");
+    end
+
     it "has a button to filter the task list table" do
       expect_selector("form input[type='submit'][value='Filter Results']")
     end

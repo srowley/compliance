@@ -6,13 +6,18 @@ class Task < ActiveRecord::Base
  
   validates_date :completed_date, allow_nil: true, :on_or_before => lambda { Date.current }
 
-  def self.filter(params)	
+  def self.filter(params, user = nil)
     result = self.all
     params.each do |field, criteria|
       if field.match(/due_date|completed_date/) && criteria.present?
         result = result.where("DATE(#{field}) = ?", criteria)
       end
     end
+
+    if params['owner'] && user
+      result = result.with_role(:owner, user)
+    end
+
     result
   end
   
@@ -25,5 +30,4 @@ class Task < ActiveRecord::Base
       end
     end
   end
-  
 end

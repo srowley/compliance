@@ -8,12 +8,12 @@ class TasksController < ApplicationController
   end
   
   def filter 
-    @tasks = Task.filter(params['filter'])
+    @tasks = Task.filter(params['filter'], current_user)
     render 'index'
   end
 
   def index
-    @tasks = Task.with_role :owner, current_user
+    @tasks = Task.all
   end
 
   def show
@@ -42,6 +42,7 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_params)
     if @task.save
+      User.where(username: params[:role]['owner']).first.add_role :owner, @task
       flash[:notice] = 'Record saved successfully.'
       redirect_to tasks_path
     else
