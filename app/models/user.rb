@@ -4,4 +4,9 @@ class User < ActiveRecord::Base
   
   validates :username, :user_first_name, :user_last_name, :email, presence: true
   validates_uniqueness_of :username
- end
+
+  def full_name_reversed
+    "#{user_last_name}, #{user_first_name}"
+  end
+
+end

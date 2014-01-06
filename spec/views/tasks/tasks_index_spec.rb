@@ -7,8 +7,9 @@ describe 'tasks/index.html.haml' do
   end
 
   before(:each) do
-    @first_task = create(:task, description: 'First task')
-    @second_task = create(:task, description: 'Second task')
+    @user = create(:user)
+    @first_task = create(:task_with_owner, description: 'First task', user: @user)
+    @second_task = create(:task_with_owner, description: 'Second task', user: @user)
     tasks = Task.all
     assign :tasks, tasks
     render
@@ -35,7 +36,7 @@ describe 'tasks/index.html.haml' do
       expect_selector("table tr td a[href='/tasks/#{@first_task.id}']", text: 'First task')
       expect_selector("table tr td", text: 'ISO')
       expect_selector("table tr td", text: 'Power Center 1')
-      expect_selector("table tr td", text: 'Steve')
+      expect_selector("table tr td", text: 'Blow, Joe')
     end
 
     it 'has a link to edit the record for that task' do
@@ -80,5 +81,4 @@ describe 'tasks/index.html.haml' do
       end
     end
   end
-  
 end

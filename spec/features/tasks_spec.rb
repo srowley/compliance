@@ -5,7 +5,6 @@ feature 'Manage task records' do
   def fill_in_form(modifier)
     fill_in 'task_facility', with: "#{modifier} Facility"                      
     fill_in 'task_agency', with: "#{modifier} Agency"      
-    fill_in 'task_owner', with: 'Stefan'                                     
     fill_in 'task_description', with: 'New Task Description'                 
     select '2015', from: 'task_due_date_1i'                                  
     select 'January', from: 'task_due_date_2i'                               
@@ -16,16 +15,19 @@ feature 'Manage task records' do
    
   before(:each) do
     @user = create(:user)
-
-    @first_task = create(:task, \
+    first_task_owner = create(:user, username: 'jane')
+    
+    @first_task = create(:task_with_owner, \
                                  description: "First task", \
                                  due_date: "2013-01-01", \
-                                 completed_date: nil)
+                                 completed_date: nil, \
+                                 user: first_task_owner)
   
-    @second_task = create(:task, \
+    @second_task = create(:task_with_owner, \
                                  description: "Second task", \
                                  due_date: "2014-01-01", \
-                                 completed_date: "2012-01-01")
+                                 completed_date: "2012-01-01", \
+                                 user: @user)
     
     login_user_post(@user.username, 'secret')
   end
@@ -77,7 +79,6 @@ feature 'Manage task records' do
     end
     
     scenario 'by owner' do
-      @user.add_role :owner, @second_task
       visit tasks_path
       check 'filter[owner]'
       click_button 'Filter Results'

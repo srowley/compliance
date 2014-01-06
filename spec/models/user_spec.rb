@@ -26,4 +26,11 @@ describe User do
       expect(@valid_user).to be_valid
     end
   end
+
+  describe '#full_name_reversed' do
+
+    it "returns the user's full name in 'Lastname, Firstname' form" do
+      expect(@valid_user.full_name_reversed).to eq("Blow, Joe")
+    end
+  end
 end

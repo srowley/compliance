@@ -2,5 +2,7 @@
   - @task.attributes.each do |attribute|
     %li
       = "#{attribute[0]}: #{attribute[1]}"
+  %li
+    = "Owner: #{User.with_role(:owner, @task).first.full_name_reversed}"
 
 = link_to "Task List", tasks_path

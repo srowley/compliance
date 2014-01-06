@@ -59,7 +59,7 @@ describe Task do
 
   context 'is not valid when' do
 
-    [:owner, :agency, :facility, :due_date].each do |attribute|
+    [:agency, :facility, :due_date].each do |attribute|
       it "the value of " + attribute.to_s + " is nil" do
         expect(build(:task, attribute => nil)).to_not be_valid
       end

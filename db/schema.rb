@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140101045359) do
+ActiveRecord::Schema.define(version: 20140106010755) do
 
   create_table "roles", force: true do |t|
     t.string   "name"
@@ -25,7 +25,6 @@ ActiveRecord::Schema.define(version: 20140101045359) do
   add_index "roles", ["name"], name: "index_roles_on_name"
 
   create_table "tasks", force: true do |t|
-    t.string   "owner"
     t.string   "agency"
     t.string   "facility"
     t.text     "description"

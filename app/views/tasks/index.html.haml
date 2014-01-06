@@ -13,7 +13,7 @@
 %table
   - @tasks.each do |task|
     %tr
-      %td= task.owner
+      %td= User.with_role(:owner, task).first.full_name_reversed
       %td= task.agency
       %td= task.facility
       %td= link_to task.description, task_path(task)
