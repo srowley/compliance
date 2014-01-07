@@ -9,7 +9,7 @@ feature 'Manage task records' do
     select '2015', from: 'task_due_date_1i'                                  
     select 'January', from: 'task_due_date_2i'                               
     select '1', from: 'task_due_date_3i'                                     
-    select @user.username, from: 'role_owner'
+    select @user.full_name_reversed, from: 'role_owner'
     click_button 'Submit'
   end
    
@@ -112,7 +112,7 @@ feature 'Manage task records' do
     end
 
     scenario 'change the owner' do
-      select 'jblow', from: 'role_owner'
+      select 'Blow, Joe', from: 'role_owner'
       expect{ click_button 'Submit' }.to change(Task, :count).by(0)
       expect(page).to have_content 'Record updated successfully.'    
       expect(page).to have_content 'Blow, Joe'

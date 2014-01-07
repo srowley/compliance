@@ -22,6 +22,9 @@
   %p
     = label_tag "Role Owner"
     %br
-    = collection_select(:role, :owner, User.all, :id, :username)
+    - if @task.new_record?
+      = collection_select(:role, :owner, User.all, :id, :full_name_reversed)
+    - else
+      = collection_select(:role, :owner, User.all, :id, :full_name_reversed,  { :selected => User.with_role(:owner, @task).first.id })
   %p
     = f.submit 'Submit'
