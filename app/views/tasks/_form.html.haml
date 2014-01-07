@@ -22,6 +22,6 @@
   %p
     = label_tag "Role Owner"
     %br
-    = collection_select(:role, :owner, User.all, :username, :username)
+    = collection_select(:role, :owner, User.all, :id, :username)
   %p
     = f.submit 'Submit'

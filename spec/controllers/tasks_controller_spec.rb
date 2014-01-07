@@ -13,10 +13,6 @@ describe TasksController do
   after(:each) do
     logout_user
   end
- # What do I want this to do?
- # Filter based on what's shown
- # Default to showing only tasks where user has role
- # Export whatever screen is showing
  
   describe 'GET #export' do
     render_views
@@ -113,12 +109,15 @@ describe TasksController do
 
     context 'when the updated attributes are valid' do
       before(:each) do
-        @task = create(:task, agency: 'old agency')
-        patch :update, id: @task, task: attributes_for(:task, agency: 'new agency')
+        @other_user = create(:user, username: 'jane', user_first_name: 'jane')
+        @task = create(:task_with_owner, agency: 'old agency', user: @user)
+        @params = { id: @task, 'task' => attributes_for(:task, agency: 'new agency'), 'role' => { 'owner' => @other_user} }
+       # patch :update, id: @task, { task: attributes_for(:task, agency: 'new agency'), 'role' => { 'owner' => @other_user.username } }
+        patch :update, @params
         @task.reload
       end
 
-      it 'updates the attributes for the edited task' do
+      it 'updates the attributes for the edited attributes' do
         expect(@task.agency).to eq('new agency')
       end
 
@@ -152,7 +151,7 @@ describe TasksController do
   describe 'POST #create' do
     before(:each) do
       user = create(:user, username: 'jane')
-      @params = { "task" => attributes_for(:task), "role" => { 'owner' => user.username } }
+      @params = { "task" => attributes_for(:task), "role" => { 'owner' => user} }
     end 
 
     context 'when valid data is provided' do

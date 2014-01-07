@@ -15,7 +15,7 @@ feature 'Manage task records' do
    
   before(:each) do
     @user = create(:user)
-    first_task_owner = create(:user, username: 'jane')
+    first_task_owner = create(:user, username: 'jane', user_first_name: 'Jane')
     
     @first_task = create(:task_with_owner, \
                                  description: "First task", \
@@ -100,11 +100,23 @@ feature 'Manage task records' do
     expect(page).to have_content 'New Facility' 
   end
 
-  scenario 'edit a record' do
-    visit edit_task_path(@first_task)
-    expect{ fill_in_form("Updated") }.to change(Task, :count).by(0)
-    expect(page).to have_content 'Record updated successfully.'    
-    expect(page).to have_content 'Updated Facility'
+  context 'when editing records' do
+    before :each do
+      visit edit_task_path(@first_task)
+    end
+   
+    scenario 'change the facility' do
+      expect{ fill_in_form("Updated") }.to change(Task, :count).by(0)
+      expect(page).to have_content 'Record updated successfully.'    
+      expect(page).to have_content 'Updated Facility'
+    end
+
+#    scenario 'change the owner' do
+#      select 'jblow', from: 'role_owner'
+#      expect{ click_button 'Submit' }.to change(Task, :count).by(0)
+#      expect(page).to have_content 'Record updated successfully.'    
+#      expect(page).to have_content 'Blow, Joe'
+#    end
   end
 
   scenario 'delete a record' do
@@ -113,5 +125,4 @@ feature 'Manage task records' do
       }.to change(Task, :count).by(-1)
     expect(page).to_not have_content 'First task'
   end
-
 end
