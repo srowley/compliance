@@ -111,12 +111,12 @@ feature 'Manage task records' do
       expect(page).to have_content 'Updated Facility'
     end
 
-#    scenario 'change the owner' do
-#      select 'jblow', from: 'role_owner'
-#      expect{ click_button 'Submit' }.to change(Task, :count).by(0)
-#      expect(page).to have_content 'Record updated successfully.'    
-#      expect(page).to have_content 'Blow, Joe'
-#    end
+    scenario 'change the owner' do
+      select 'jblow', from: 'role_owner'
+      expect{ click_button 'Submit' }.to change(Task, :count).by(0)
+      expect(page).to have_content 'Record updated successfully.'    
+      expect(page).to have_content 'Blow, Joe'
+    end
   end
 
   scenario 'delete a record' do
