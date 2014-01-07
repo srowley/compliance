@@ -11,6 +11,7 @@ Users can export a .csv file of tasks meeting filter criteria
 
 0.2
 Users authenticate with e-mail address and password.
+Can specify task owner
 Can filter list of tasks to see only those they own.
 
 0.3
