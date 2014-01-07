@@ -191,11 +191,16 @@ describe TasksController do
   
   describe 'DELETE #destroy' do
     before(:each) do
-      @task = create(:task)
+      @task = create(:task_with_owner, user: @user)
     end
 
     it 'deletes the selected record' do
       expect { delete :destroy, id: @task }.to change(Task, :count).by(-1)
+    end
+
+    it 'destroys the associated roles for that task' do
+      delete :destroy, id: @task
+      expect(@user.has_role? :owner, @task).to_not be_true
     end
 
     it 'redirects to tasks#index' do
