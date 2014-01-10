@@ -15,7 +15,7 @@ FactoryGirl.define do
       end
     
       after(:create) do |task, transients|
-        transients.user.add_role :owner, task
+        task.owner = transients.user
       end
     end
   end
