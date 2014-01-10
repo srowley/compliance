@@ -57,6 +57,32 @@ describe Task do
     end
   end
 
+  describe "#owner" do
+    
+    it "returns the user with the owner role" do
+      user = create(:user)
+      user.add_role :owner, @valid_task 
+      expect(@valid_task.owner).to eq(user)
+    end
+  end
+
+  describe "#owner=" do
+
+    it "assigns the owner role to a given user" do
+      user = create(:user)
+      @valid_task.owner = user
+      expect(@valid_task.owner).to eq(user)
+    end
+
+    it "removes the owner role of the previous owner" do
+      old_owner = create(:user, username: 'Old Owner')
+      new_owner = create(:user, username: 'New Owner')
+      @valid_task.owner = old_owner
+      @valid_task.owner = new_owner
+      expect(old_owner.has_role?(:owner, @valid_task)).to be_false
+    end
+  end
+
   context 'is not valid when' do
 
     [:agency, :facility, :due_date].each do |attribute|

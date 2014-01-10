@@ -30,4 +30,13 @@ class Task < ActiveRecord::Base
       end
     end
   end
+
+  def owner
+    User.with_role(:owner, self).first
+  end
+
+  def owner=(user)
+    self.owner.remove_role(:owner, self) if User.with_role(:owner, self).count > 0
+    user.add_role(:owner, self)
+  end
 end

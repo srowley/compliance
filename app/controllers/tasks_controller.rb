@@ -31,8 +31,7 @@ class TasksController < ApplicationController
   def update
     @task = Task.find(params[:id])
     if @task.update(task_params)
-      User.with_role(:owner, @task).first.remove_role(:owner)
-      User.find(params[:role]['owner']).add_role :owner, @task
+      @task.owner = User.find(params[:role]['owner'])
       flash[:notice] = 'Record updated successfully.'
       redirect_to task_path(@task) 
     else
@@ -44,7 +43,7 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_params)
     if @task.save
-      User.find(params[:role]['owner']).add_role :owner, @task
+      @task.owner = User.find(params[:role]['owner'])
       flash[:notice] = 'Record saved successfully.'
       redirect_to tasks_path
     else
