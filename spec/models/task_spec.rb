@@ -3,14 +3,13 @@ require 'spec_helper'
 describe Task do
 
   before(:each) do
-    @valid_task = create(:task)
+    @user = create(:user)
+    @valid_task = create(:task_with_owner, user: @user)
   end
 
   describe 'with_role' do
     before(:each) do
-      @user = create(:user)
       @taskless_user = create(:user, username: 'bummed')
-      @user.add_role :owner, @valid_task
     end
     
     context 'when the user has a role on the task' do
@@ -28,8 +27,8 @@ describe Task do
   
   describe '::to_csv' do
     before(:each) do
-      @urgent_task = create(:task, due_date: '2014-01-01') 
-      @trivial_task = create(:task, due_date: '2200-01-01') 
+      @urgent_task = create(:task_with_owner, due_date: '2014-01-01', user: @user) 
+      @trivial_task = create(:task_with_owner, due_date: '2200-01-01', user: @user) 
     end
     
     it 'returns csv formatted text' do
@@ -60,26 +59,22 @@ describe Task do
   describe "#owner" do
     
     it "returns the user with the owner role" do
-      user = create(:user)
-      user.add_role :owner, @valid_task 
-      expect(@valid_task.owner).to eq(user)
+      expect(@valid_task.owner).to eq(@user)
     end
   end
 
   describe "#owner=" do
 
     it "assigns the owner role to a given user" do
-      user = create(:user)
-      @valid_task.owner = user
-      expect(@valid_task.owner).to eq(user)
+      user = create(:user, username: 'jane')
+      task = create(:task_with_owner, user: user)
+      expect(task.owner).to eq(user)
     end
 
     it "removes the owner role of the previous owner" do
-      old_owner = create(:user, username: 'Old Owner')
       new_owner = create(:user, username: 'New Owner')
-      @valid_task.owner = old_owner
       @valid_task.owner = new_owner
-      expect(old_owner.has_role?(:owner, @valid_task)).to be_false
+      expect(@user.has_role?(:owner, @valid_task)).to be_false
     end
   end
 

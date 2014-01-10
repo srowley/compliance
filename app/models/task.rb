@@ -24,9 +24,9 @@ class Task < ActiveRecord::Base
   def self.to_csv(params)
     tasks = params.nil? ? self.all : self.filter(params)
     CSV.generate do |csv|
-      csv << column_names
+      csv << (column_names << 'owner')
       tasks.each do |task|
-        csv << task.attributes.values
+        csv << (task.attributes.values << task.owner.full_name_reversed)
       end
     end
   end

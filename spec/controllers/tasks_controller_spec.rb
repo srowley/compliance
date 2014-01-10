@@ -7,7 +7,6 @@ describe TasksController do
     login_user
     create(:task_with_owner, due_date: '2013-01-01', user: @user)
     create(:task_with_owner, due_date: '2015-01-01', user: @user)
-    create(:task, due_date: '2016-01-01')
   end
   
   after(:each) do
@@ -22,7 +21,11 @@ describe TasksController do
         get :export, :format => 'csv'
         expect(response.body).to match /2013-01-01/
         expect(response.body).to match /2015-01-01/
-        expect(response.body).to match /2016-01-01/
+      end
+
+      it "includes the owner" do
+        get :export, :format => 'csv'
+        expect(response.body).to match /Blow, Joe/
       end
     end
     
@@ -31,7 +34,6 @@ describe TasksController do
         get :export, { :format => 'csv', 'filter' => { due_date: '2015-01-01' } }
         expect(response.body).to match /2015-01-01/
         expect(response.body).to_not match /2013-01-01/
-        expect(response.body).to_not match /2016-01-01/
       end
     end
   end
