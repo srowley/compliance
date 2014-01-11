@@ -78,6 +78,29 @@ describe Task do
     end
   end
 
+  describe "#subscribers" do
+    it "returns a relation with the subscribers to a task" do
+      @subscriber_1 = create(:user, username: "sub_1")
+      @subscriber_2 = create(:user, username: "sub_2")
+      @subscriber_1.add_role :subscriber, @valid_task
+      @subscriber_2.add_role :subscriber, @valid_task
+      expect(@valid_task.subscribers).to match_array([@subscriber_1, @subscriber_2]) 
+    end
+  end
+
+  describe "#subscribers=" do
+    context "given an array of User id's" do
+      it "sets the subscribers for task" do
+        @subscriber_1 = create(:user, username: "sub_1")
+        @subscriber_2 = create(:user, username: "sub_2")
+        @subscriber_1.add_role :subscriber, @valid_task
+        @subscriber_2.add_role :subscriber, @valid_task
+        @valid_task.subscribers = [@subscriber_1.id, @subscriber_2.id]
+        expect(@valid_task.subscribers).to match_array([@subscriber_1, @subscriber_2]) 
+      end
+    end
+  end
+
   context 'is not valid when' do
 
     [:agency, :facility, :due_date].each do |attribute|
@@ -97,7 +120,6 @@ describe Task do
     it 'the completed date is after the current date' do
       expect(build(:task, completed_date: Time.now + 1.day)).to_not be_valid
     end
-
   end
 
   context 'is valid when' do

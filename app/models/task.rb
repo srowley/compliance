@@ -39,4 +39,19 @@ class Task < ActiveRecord::Base
     self.owner.remove_role(:owner, self) if User.with_role(:owner, self).count > 0
     user.add_role(:owner, self)
   end
+
+  def subscribers
+    User.with_role(:subscriber, self)
+  end
+
+  def subscribers=(users = [])
+
+    subscribers.each do |subscriber|
+      subscriber.remove_role :subscriber, self
+    end
+    
+    users.each do |user|
+      User.find(user).add_role :subscriber, self
+    end
+  end
 end
