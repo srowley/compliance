@@ -2,19 +2,18 @@ require 'spec_helper'
 
 describe Task do
 
-  before(:each) do
-    @user = create(:user)
-    @valid_task = create(:task_with_owner, user: @user)
-  end
+  let(:user) { create(:user) }
+  let(:valid_task) { create(:task_with_owner, user: user) }
 
   describe 'with_role' do
     before(:each) do
+      valid_task
       @taskless_user = create(:user, username: 'bummed')
     end
     
     context 'when the user has a role on the task' do
       it 'returns a list of tasks with that role bound' do
-        expect(Task.with_role(:owner, @user).count).to eq(1)
+        expect(Task.with_role(:owner, user).count).to eq(1)
       end
     end
     
@@ -27,8 +26,8 @@ describe Task do
   
   describe '::to_csv' do
     before(:each) do
-      @urgent_task = create(:task_with_owner, due_date: '2014-01-01', user: @user) 
-      @trivial_task = create(:task_with_owner, due_date: '2200-01-01', user: @user) 
+      create(:task_with_owner, due_date: '2014-01-01', user: user) 
+      create(:task_with_owner, due_date: '2200-01-01', user: user) 
     end
     
     it 'returns csv formatted text' do
@@ -59,22 +58,23 @@ describe Task do
   describe "#owner" do
     
     it "returns the user with the owner role" do
-      expect(@valid_task.owner).to eq(@user)
+      expect(valid_task.owner).to eq(user)
     end
   end
 
   describe "#owner=" do
-
+    
+    before(:each) do
+      @new_owner = create(:user, username: 'jane')
+      valid_task.owner = @new_owner
+    end
+    
     it "assigns the owner role to a given user" do
-      user = create(:user, username: 'jane')
-      task = create(:task_with_owner, user: user)
-      expect(task.owner).to eq(user)
+      expect(valid_task.owner).to eq(@new_owner)
     end
 
     it "removes the owner role of the previous owner" do
-      new_owner = create(:user, username: 'New Owner')
-      @valid_task.owner = new_owner
-      expect(@user.has_role?(:owner, @valid_task)).to be_false
+      expect(user.has_role?(:owner, valid_task)).to be_false
     end
   end
 
@@ -82,9 +82,9 @@ describe Task do
     it "returns a relation with the subscribers to a task" do
       @subscriber_1 = create(:user, username: "sub_1")
       @subscriber_2 = create(:user, username: "sub_2")
-      @subscriber_1.add_role :subscriber, @valid_task
-      @subscriber_2.add_role :subscriber, @valid_task
-      expect(@valid_task.subscribers).to match_array([@subscriber_1, @subscriber_2]) 
+      @subscriber_1.add_role :subscriber, valid_task
+      @subscriber_2.add_role :subscriber, valid_task
+      expect(valid_task.subscribers).to match_array([@subscriber_1, @subscriber_2]) 
     end
   end
 
@@ -93,10 +93,10 @@ describe Task do
       it "sets the subscribers for task" do
         @subscriber_1 = create(:user, username: "sub_1")
         @subscriber_2 = create(:user, username: "sub_2")
-        @subscriber_1.add_role :subscriber, @valid_task
-        @subscriber_2.add_role :subscriber, @valid_task
-        @valid_task.subscribers = [@subscriber_1.id, @subscriber_2.id]
-        expect(@valid_task.subscribers).to match_array([@subscriber_1, @subscriber_2]) 
+        @subscriber_1.add_role :subscriber, valid_task
+        @subscriber_2.add_role :subscriber, valid_task
+        valid_task.subscribers = [@subscriber_1.id, @subscriber_2.id]
+        expect(valid_task.subscribers).to match_array([@subscriber_1, @subscriber_2]) 
       end
     end
   end
@@ -125,7 +125,7 @@ describe Task do
   context 'is valid when' do
 
     it 'all fields are completed' do
-      expect(@valid_task).to be_valid
+      expect(build(:task)).to be_valid
     end
 
     it 'the completed date is blank' do
