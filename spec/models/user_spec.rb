@@ -2,9 +2,7 @@ require 'spec_helper'
 
 describe User do
   
-  before(:each) do
-    @valid_user = build(:user)
-  end
+  let(:valid_user) { build(:user) }
     
   context 'is not valid when' do
 
@@ -16,21 +14,21 @@ describe User do
 
     it "the username is not unique" do
       create(:user)
-      expect(@valid_user).to_not be_valid
+      expect(valid_user).to_not be_valid
     end
   end
     
   context 'is valid when' do
       
     it 'all fields are completed' do
-      expect(@valid_user).to be_valid
+      expect(valid_user).to be_valid
     end
   end
 
   describe '#full_name_reversed' do
 
     it "returns the user's full name in 'Lastname, Firstname' form" do
-      expect(@valid_user.full_name_reversed).to eq("Blow, Joe")
+      expect(valid_user.full_name_reversed).to eq("Blow, Joe")
     end
   end
 end
