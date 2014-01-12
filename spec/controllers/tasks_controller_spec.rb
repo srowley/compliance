@@ -3,10 +3,10 @@ require 'spec_helper'
 describe TasksController do
   
   before(:each) do
-    @user = create(:user)
+    @user = build_stubbed(:user)
     login_user
-    @task = create(:task_with_owner, due_date: '2013-01-01', user: @user)
-    create(:task_with_owner, due_date: '2015-01-01', user: @user)
+    @task = build_stubbed(:task_with_owner, due_date: '2013-01-01', user: @user)
+    build_stubbed(:task_with_owner, due_date: '2015-01-01', user: @user)
   end
   
   after(:each) do
@@ -16,9 +16,16 @@ describe TasksController do
   describe 'GET #export' do
     render_views
     
+    # have to persist to pull back out of the db
+    before(:each) do
+      user = create(:user)
+      create(:task_with_owner, due_date: '2013-01-01', user: user)
+      create(:task_with_owner, due_date: '2015-01-01', user: user)
+    end
+
     context "when records are not filtered" do
       it "exports all records to csv" do
-        get :export, :format => 'csv'
+       get :export, :format => 'csv'
         expect(response.body).to match /2013-01-01/
         expect(response.body).to match /2015-01-01/
       end
@@ -151,18 +158,20 @@ describe TasksController do
 
   describe "DELETE #unsubscribe" do
     it "unsubscribes a user from the task" do
+      task = create(:task_with_owner, due_date: '2013-01-01', user: @user)
       subscriber = create(:user, username: "subscriber")
-      subscriber.add_role :subscriber, @task
-      delete :unsubscribe, id: @task, user_id: subscriber
-      expect(subscriber.has_role? :subscriber, @task).to be_false
+      subscriber.add_role :subscriber, task
+      delete :unsubscribe, id: task, user_id: subscriber
+      expect(subscriber.has_role? :subscriber, task).to be_false
     end
   end
 
   describe "POST #subscribe" do
     it "subscribes a user to the task" do
+      task = create(:task_with_owner, due_date: '2013-01-01', user: @user)
       subscriber = create(:user, username: "subscriber")
-      post :subscribe, { id: @task,  "role" => { "subscriber" => subscriber } }
-      expect(subscriber.has_role? :subscriber, @task).to be_true 
+      post :subscribe, { id: task,  "role" => { "subscriber" => subscriber } }
+      expect(subscriber.has_role? :subscriber, task).to be_true 
     end    
   end
 
