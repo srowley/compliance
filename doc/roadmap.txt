@@ -15,16 +15,22 @@ Can specify task owner
 Can filter list of tasks to see only those they own.
 
 0.3
-Tasks can have users with a "CC:" role.
-An admin role exists. Only users with owner, cc: or admin role can update or delete tasks.
+Tasks can have users with a subscriber role.
+Owners can read and write their own tasks.
+Subscribers can read tasks to which they are subscribed.
+Users can have an editor role.
+Editors can read and write any task.
+
+0.3.1
+Audit trail
+Alerts on changes (submitted, due date/owner changed, deleted)
 
 Future
-Pagination
 Attach files
+Pagination
 Handle recurring tasks
 Attach "reference links" to URLs with notes (e.g. "see section 2.1 of contract linked here")
 Allow contingent dates
 Copy/paste tasks
-Audit trail
 Alerts on changes (submitted, due date/owner changed, deleted)
 Additional fields and/or tags
