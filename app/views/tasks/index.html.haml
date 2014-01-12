@@ -11,6 +11,14 @@
     = submit_tag("Filter Results")
     
 %table
+  %thead
+    %tr
+      %td Owner
+      %td Agency
+      %td Facility
+      %td Description
+      %td
+      %td
   - @tasks.each do |task|
     %tr
       %td= User.with_role(:owner, task).first.full_name_reversed
