@@ -15,6 +15,9 @@ Compliance::Application.routes.draw do
   get "logout" => "sessions#destroy", :as => "logout"
   get "login" => "sessions#new", :as => "login"
 
+  post "task/:id/subscribe" => "tasks#subscribe", :as => "subscribe"
+  delete "task/:id/subscriber/:user_id" => "tasks#unsubscribe", :as => "unsubscribe"
+ 
   # Example resource route (maps HTTP verbs to controller actions automatically):
   resources :users
   resources :sessions

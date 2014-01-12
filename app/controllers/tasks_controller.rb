@@ -58,6 +58,18 @@ class TasksController < ApplicationController
     redirect_to tasks_path
   end
 
+  def subscribe
+    @task = Task.find(params[:id])
+    User.find(params[:role]['subscriber']).add_role :subscriber, @task
+    redirect_to edit_task_path(@task)  
+  end
+
+  def unsubscribe
+    @task = Task.find(params[:id])
+    User.find(params[:user_id]).remove_role :subscriber, @task
+    redirect_to edit_task_path(@task)
+  end
+
   private
 
     def task_params

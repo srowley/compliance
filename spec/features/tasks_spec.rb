@@ -117,6 +117,19 @@ feature 'Manage task records' do
       expect(page).to have_content 'Record updated successfully.'    
       expect(page).to have_content 'Blow, Joe'
     end
+    
+    scenario 'add a subscriber' do
+      select 'Blow, Joe', from: 'role_subscriber'
+      expect{ click_button 'Add' }.to change(Role, :count).by(1)
+      expect(page).to have_selector('ul li', text: 'Blow, Joe')
+    end
+
+    scenario 'remove a subscriber' do
+      select 'Blow, Joe', from: 'role_subscriber'
+      click_button 'Add'
+      expect{ click_link 'Delete' }.to change(Role, :count).by(-1)
+      expect(page).to_not have_selector('ul li', text: 'Blow, Joe')
+    end
   end
 
   scenario 'delete a record' do

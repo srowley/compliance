@@ -5,7 +5,7 @@ describe TasksController do
   before(:each) do
     @user = create(:user)
     login_user
-    create(:task_with_owner, due_date: '2013-01-01', user: @user)
+    @task = create(:task_with_owner, due_date: '2013-01-01', user: @user)
     create(:task_with_owner, due_date: '2015-01-01', user: @user)
   end
   
@@ -114,7 +114,6 @@ describe TasksController do
         @other_user = create(:user, username: 'jane', user_first_name: 'jane')
         @task = create(:task_with_owner, agency: 'old agency', user: @user)
         @params = { id: @task, 'task' => attributes_for(:task, agency: 'new agency'), 'role' => { 'owner' => @other_user} }
-       # patch :update, id: @task, { task: attributes_for(:task, agency: 'new agency'), 'role' => { 'owner' => @other_user.username } }
         patch :update, @params
         @task.reload
       end
@@ -148,6 +147,23 @@ describe TasksController do
         expect(flash[:alert]).to eq('Update invalid. Record not saved.')
       end
     end
+  end
+
+  describe "DELETE #unsubscribe" do
+    it "unsubscribes a user from the task" do
+      subscriber = create(:user, username: "subscriber")
+      subscriber.add_role :subscriber, @task
+      delete :unsubscribe, id: @task, user_id: subscriber
+      expect(subscriber.has_role? :subscriber, @task).to be_false
+    end
+  end
+
+  describe "POST #subscribe" do
+    it "subscribes a user to the task" do
+      subscriber = create(:user, username: "subscriber")
+      post :subscribe, { id: @task,  "role" => { "subscriber" => subscriber } }
+      expect(subscriber.has_role? :subscriber, @task).to be_true 
+    end    
   end
 
   describe 'POST #create' do

@@ -20,7 +20,7 @@
     %br
     = f.date_select :completed_date
   %p
-    = label_tag "Role Owner"
+    = label_tag "Owner"
     %br
     - if @task.new_record?
       = collection_select(:role, :owner, User.all, :id, :full_name_reversed)
@@ -28,3 +28,15 @@
       = collection_select(:role, :owner, User.all, :id, :full_name_reversed,  { :selected => User.with_role(:owner, @task).first.id })
   %p
     = f.submit 'Submit'
+
+- if !@task.new_record?
+  %p Subscribers
+  = form_tag({ controller: "tasks", action: "subscribe", id: @task.id }, method: "post") do
+    = collection_select(:role, :subscriber, User.all, :id, :full_name_reversed)
+    = submit_tag "Add"
+
+  %ul
+    - @task.subscribers.each do |subscriber|
+      %li
+        = subscriber.full_name_reversed
+        = link_to "Delete", unsubscribe_path(@task, subscriber), method: :delete 
