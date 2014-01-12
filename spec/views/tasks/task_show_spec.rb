@@ -9,16 +9,23 @@ describe 'tasks/show.html.haml' do
   before(:each) do
     @user = create(:user)
     @task = create(:task_with_owner, user: @user) 
+    @subscriber_1 = create(:user, username: "sub1", user_first_name: "First", user_last_name: "Sub")
+    @subscriber_2 = create(:user, username: "sub2", user_first_name: "Second", user_last_name: "Sub")
+    @task.subscribers = [@subscriber_1.id, @subscriber_2.id]
     assign :task, @task
     render
   end
   
-  describe 'roles table' do
+  describe 'stakeholders section' do
 
-    it "has a list of each user with a role and their role" do
+    it "shows the owner" do
       expect(rendered).to have_selector('ul li', text: "Owner: Blow, Joe")
     end
 
-  end
 
+    it "has a list of subscribers" do
+      expect(rendered).to have_selector('ul li', text: "Sub, Second")
+      expect(rendered).to have_selector('ul li', text: "Sub, First")
+    end
+  end
 end

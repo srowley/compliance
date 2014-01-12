@@ -4,5 +4,10 @@
       = "#{attribute[0]}: #{attribute[1]}"
   %li
     = "Owner: #{User.with_role(:owner, @task).first.full_name_reversed}"
+%h3 Subscribers
+%ul
+  - @task.subscribers.each do |subscriber|
+    %li
+      = subscriber.full_name_reversed
 
 = link_to "Task List", tasks_path
