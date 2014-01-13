@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
   before_action :require_login
 
-  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  rescue_from Pundit::NotAuthorizedError, with: :not_authorized
     
   private
 
@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
     redirect_to login_path, alert: "Log in to view this page."
   end
 
-  def user_not_authorized
+  def not_authorized
     flash[:error] = "You are not authorized to perform this action."
     redirect_to request.headers["Referer"] || root_path
   end
