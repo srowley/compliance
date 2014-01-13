@@ -17,6 +17,10 @@ FactoryGirl.define do
       after(:create) do |task, transients|
         task.owner = transients.user
       end
+      
+      after(:stub) do |task, transients|
+        task.owner = transients.user
+      end
     end
   end
 end
