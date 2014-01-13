@@ -136,7 +136,7 @@ describe TasksController do
 
     context 'when the updated attributes are not valid' do
       before(:each) do
-        @task = create(:task, agency: 'old agency', facility: 'old facility')
+        @task = create(:task_with_owner, agency: 'old agency', facility: 'old facility', user: @user)
         patch :update, id: @task, task: attributes_for(:task, agency: nil, facility: 'new facility')
         @task.reload
       end

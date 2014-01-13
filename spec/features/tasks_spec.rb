@@ -102,7 +102,7 @@ feature 'Manage task records' do
 
   context 'when editing records' do
     before :each do
-      visit edit_task_path(@first_task)
+      visit edit_task_path(@second_task)
     end
    
     scenario 'change the facility' do
@@ -112,16 +112,16 @@ feature 'Manage task records' do
     end
 
     scenario 'change the owner' do
-      select 'Blow, Joe', from: 'role_owner'
+      select 'Blow, Jane', from: 'role_owner'
       expect{ click_button 'Submit' }.to change(Task, :count).by(0)
       expect(page).to have_content 'Record updated successfully.'    
-      expect(page).to have_content 'Blow, Joe'
+      expect(page).to have_content 'Blow, Jane'
     end
     
     scenario 'add a subscriber' do
-      select 'Blow, Joe', from: 'role_subscriber'
+      select 'Blow, Jane', from: 'role_subscriber'
       expect{ click_button 'Add' }.to change(Role, :count).by(1)
-      expect(page).to have_selector('ul li', text: 'Blow, Joe')
+      expect(page).to have_selector('ul li', text: 'Blow, Jane')
     end
 
     scenario 'remove a subscriber' do

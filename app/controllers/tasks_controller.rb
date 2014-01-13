@@ -30,6 +30,7 @@ class TasksController < ApplicationController
 
   def update
     @task = Task.find(params[:id])
+    authorize @task
     if @task.update(task_params)
       @task.owner = User.find(params[:role]['owner'])
       flash[:notice] = 'Record updated successfully.'
