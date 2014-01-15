@@ -44,5 +44,23 @@ describe UsersController do
         expect(response).to render_template :new
       end
     end
+
+    context 'when editor flag is true' do
+
+      it 'adds the editor role' do
+        params = { "user" => attributes_for(:user), "editor" => "true" }
+        post :create, params
+        expect(assigns(:user).has_role?(:editor, Task)).to be_true
+      end
+    end
+    
+    context 'when editor flag is not true' do
+
+      it 'does not add the editor role' do
+        params = { "user" => attributes_for(:user), "editor" => "other" }
+        post :create, params
+        expect(assigns(:user).has_role?(:editor, Task)).to be_false
+      end
+    end
   end
 end
