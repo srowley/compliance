@@ -4,6 +4,7 @@ describe TaskPolicy do
 
   let(:owner) { create(:user) }
   let(:non_owner) { create(:user, username: 'jane') }
+  let(:editor) { create(:editor, username: 'eddy') }
   let(:task) { create(:task_with_owner, user: owner) }
 
   context "for the task owner" do
@@ -22,9 +23,21 @@ describe TaskPolicy do
 
     it { should permit(:create) }
     it { should permit(:new) }
-    it { should_not permit(:show) }
+    it { should permit(:show) }
     it { should_not permit(:update) }
     it { should_not permit(:edit) }
     it { should_not permit(:destroy) }
+  end
+
+  context "for an editor" do
+    subject { TaskPolicy.new(editor, task) }
+
+    it { should permit(:show)    }
+    it { should permit(:create)    }
+    it { should permit(:new)    }
+    it { should permit(:update)    }
+    it { should permit(:edit)    }
+    it { should permit(:destroy)    }
+    
   end
 end

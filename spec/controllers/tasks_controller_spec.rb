@@ -3,7 +3,7 @@ require 'spec_helper'
 describe TasksController do
   
   before(:each) do
-    @user = build_stubbed(:user)
+    @user = create(:editor)
     login_user
     @task = build_stubbed(:task_with_owner, due_date: '2013-01-01', user: @user)
     build_stubbed(:task_with_owner, due_date: '2015-01-01', user: @user)

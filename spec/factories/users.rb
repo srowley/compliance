@@ -5,7 +5,7 @@ FactoryGirl.define do
   salt =  'abdasdastr4325234324sdfds'
 
   factory :user do
-    username 'jblow'
+    sequence(:username) { |n| "user#{n}" }
     email 'Joe.Blow@pocketbookvote.com' 
     salt salt
     password 'secret'
@@ -13,5 +13,10 @@ FactoryGirl.define do
     user_first_name 'Joe'
     user_last_name 'Blow'
 
+    factory :editor do
+      after(:create) do |user, evaluator|
+        user.add_role :editor, Task
+      end
+    end
   end
 end

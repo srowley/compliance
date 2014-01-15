@@ -8,7 +8,7 @@ feature 'Authentication' do
   
   scenario "Log in and then log out" do
     visit login_path
-    fill_in 'username', with: 'jblow'
+    fill_in 'username', with: @user.username
     fill_in 'password', with: 'secret'
     click_button 'Log In'
     expect(page).to have_content "Logged in."
@@ -29,7 +29,7 @@ feature 'Authentication' do
   
   context "When logged in" do
     scenario "render tasks page when visiting tasks page" do
-      login_user_post 'jblow', 'secret'
+      login_user_post @user.username, 'secret'
       visit tasks_path
       expect(page).to have_content "Tasks"
       expect(page).to_not have_content "Username"     

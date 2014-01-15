@@ -18,10 +18,12 @@ class TasksController < ApplicationController
 
   def show
     @task = Task.find(params[:id])
+    authorize @task
   end
 
   def new
     @task = Task.new
+    authorize @task
   end
 
   def edit
@@ -43,6 +45,7 @@ class TasksController < ApplicationController
 
   def create
     @task = Task.new(task_params)
+    authorize @task
     if @task.save
       @task.owner = User.find(params[:role]['owner'])
       flash[:notice] = 'Record saved successfully.'
@@ -55,6 +58,7 @@ class TasksController < ApplicationController
 
   def destroy
     @task = Task.find(params[:id])
+    authorize @task
     @task.destroy
     redirect_to tasks_path
   end

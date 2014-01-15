@@ -1,14 +1,10 @@
 class TaskPolicy < ApplicationPolicy
-
-  def show?
-    user.has_role? :owner, record 
-  end
   
   def update?
-    user.has_role? :owner, record
+    user.has_role?(:owner, record) || user.has_role?(:editor, Task)
   end
 
   def destroy?
-    user.has_role? :editor
+    user.has_role? :editor, Task
   end
 end

@@ -14,7 +14,7 @@ feature 'Manage task records' do
   end
    
   before(:each) do
-    @user = create(:user)
+    @user = create(:editor)
     first_task_owner = create(:user, username: 'jane', user_first_name: 'Jane')
     
     @first_task = create(:task_with_owner, \

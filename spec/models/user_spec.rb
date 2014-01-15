@@ -13,7 +13,8 @@ describe User do
     end
 
     it "the username is not unique" do
-      create(:user)
+      #create this object b/c one has to be persisted for validation to fail
+      create(:user, username: valid_user.username)
       expect(valid_user).to_not be_valid
     end
   end

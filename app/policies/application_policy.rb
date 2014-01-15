@@ -11,7 +11,7 @@ class ApplicationPolicy
   end
 
   def show?
-    false 
+    true
 #    scope.where(:id => record.id).exists?
   end
 
@@ -32,7 +32,7 @@ class ApplicationPolicy
   end
 
   def destroy?
-    true 
+    false 
   end
 
 #  def scope
