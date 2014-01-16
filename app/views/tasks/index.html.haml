@@ -18,15 +18,20 @@
       %td Facility
       %td Description
       %td
-      %td
+      - if current_user.has_role?(:editor, Task)
+        %td
   - @tasks.each do |task|
     %tr
       %td= User.with_role(:owner, task).first.full_name_reversed
       %td= task.agency
       %td= task.facility
-      %td= link_to task.description, task_path(task)
-      %td= link_to 'Edit', edit_task_path(task)
-      %td= link_to 'Delete', task_path(task), method: :delete
+      %td= task.description
+      - if policy(task).update?
+        %td= link_to 'Edit', edit_task_path(task)
+      - else
+        %td= link_to 'View', task_path(task)
+      - if current_user.has_role?(:editor, Task)
+        %td= link_to 'Delete', task_path(task), method: :delete
 
 = link_to 'New Task', new_task_path
 = link_to 'Export Tasks', export_tasks_path(csv_params(params['filter']))
