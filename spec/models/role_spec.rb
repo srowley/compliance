@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Role' do
+describe 'Role', skip: true do
   describe 'stubbed assignment of editor role to Task' do
     it "has the 'editor' role name" do
       @role = build_stubbed_task_editor
