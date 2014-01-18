@@ -23,9 +23,10 @@ Editors can read and write any task.
 
 0.3.1
 Audit trail
-Alerts on changes (submitted, due date/owner changed, deleted)
+Users can see audit trail for a given record
 
 Future
+Alerts on changes (submitted, due date/owner changed, deleted)
 Attach files
 Pagination
 Handle recurring tasks
