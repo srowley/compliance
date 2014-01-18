@@ -7,11 +7,16 @@ describe 'tasks/index.html.haml' do
   end
 
   before(:each) do
-    @user = create(:user)
-    view.stub(:current_user).and_return(@user)
-    view.stub(:policy).and_return double(:policy, update?: true, destroy?: false)
-    @first_task = create(:task_with_owner, description: 'First task', user: @user)
-    @second_task = create(:task_with_owner, description: 'Second task', user: @user)
+    #@user = create(:user)
+    #@first_task = create(:task_with_owner, description: 'First task', user: @user)
+    #@second_task = create(:task_with_owner, description: 'Second task', user: @user)
+    @owner = build_stubbed(:user)
+    @first_task = build_stubbed(:task, description: 'First task')
+    @second_task = build_stubbed(:task, description: 'Second task')
+    @first_role = build_stubbed_task_with_owner(@owner, @first_task)
+    @second_role = build_stubbed_task_with_owner(@owner, @second_task)
+    allow(view).to receive(:current_user) { @owner }
+    allow(view).to receive(:policy) { double(:policy, update?: true, destroy?: false) }
     tasks = Task.all
     assign :tasks, tasks
   end
@@ -51,12 +56,15 @@ describe 'tasks/index.html.haml' do
 
   describe 'the task list table' do
     before(:each) do
-        @user = create(:user)
-        view.stub(:current_user).and_return(@user)
-        view.stub(:policy).and_return double(:policy, update?: true, destroy?: false)
-        @first_task = create(:task_with_owner, description: 'First task', user: @user)
-        @second_task = create(:task_with_owner, description: 'Second task', user: @user)
-        tasks = Task.all
+        @owner = build_stubbed(:user)
+        allow(view).to receive(:current_user) { @owner }
+        allow(view).to receive(:policy) { double(:policy, update?: true, destroy?: false) }
+        @first_task = build_stubbed(:task, description: 'First task')
+        @second_task = build_stubbed(:task, description: 'Second task')
+        @first_role = build_stubbed_task_with_owner(@owner, @first_task)
+        @second_role = build_stubbed_task_with_owner(@owner, @second_task)
+        allow(User).to receive(:with_role) { @first_role.users }
+        tasks = [@first_task, @second_task]
         assign :tasks, tasks
       end
 
@@ -85,7 +93,7 @@ describe 'tasks/index.html.haml' do
 
       context 'if user does not have permission to edit the record' do
         it 'has a link to view the record' do
-          view.stub(:policy).and_return double(:policy, update?: false)
+          allow(view).to receive(:policy) { double(:policy, update?: false) }
           render
           expect_selector("table tr td a[href='/tasks/#{@first_task.id}']", text: 'View')
         end
@@ -94,6 +102,7 @@ describe 'tasks/index.html.haml' do
       context 'if user has permission to destroy the record' do
         it 'has a link to delete the record' do
           editor = create(:editor)
+          role = build_stubbed_task_editor(editor)
           view.stub(:current_user).and_return(editor)
           view.stub(:policy).and_return double(:policy, update?: true, destroy?: true)
           render

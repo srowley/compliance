@@ -18,5 +18,9 @@ FactoryGirl.define do
         user.add_role :editor, Task
       end
     end
+
+    factory :stubbed_editor do
+      user_first_name 'Editor'
+    end
   end
 end

@@ -7,11 +7,15 @@ describe 'tasks/show.html.haml' do
   end
 
   before(:each) do
-    @user = create(:user)
-    @task = create(:task_with_owner, user: @user) 
-    @subscriber_1 = create(:user, username: "sub1", user_first_name: "First", user_last_name: "Sub")
-    @subscriber_2 = create(:user, username: "sub2", user_first_name: "Second", user_last_name: "Sub")
-    @task.subscribers = [@subscriber_1.id, @subscriber_2.id]
+    @owner = build_stubbed(:user)
+    @task = build_stubbed(:task)
+    @role = build_stubbed_task_with_owner(@owner, @task)
+    allow(User).to receive(:with_role) { @role.users }
+
+    @sub1 = build_stubbed(:user, user_first_name: "First", user_last_name: "Sub")
+    @sub2 = build_stubbed(:user, user_first_name: "Second", user_last_name: "Sub")
+    allow(@task).to receive(:subscribers) { [@sub1, @sub2] }
+
     assign :task, @task
     render
   end
