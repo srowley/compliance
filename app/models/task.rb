@@ -1,6 +1,7 @@
 class Task < ActiveRecord::Base
  
   resourcify
+  has_paper_trail
   
   validates :agency, :facility, :due_date, presence: true
  

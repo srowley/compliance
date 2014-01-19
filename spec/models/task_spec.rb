@@ -132,4 +132,18 @@ describe Task do
       expect(build(:task, completed_date: nil)).to be_valid
     end
   end
+  
+  describe 'versioning', versioning: true do
+    it "creates a new version when attribute is changed" do
+      number_of_versions = valid_task.versions.length
+      valid_task.update_attribute(:agency, "NERC") 
+      expect(valid_task.versions.length).to eq(number_of_versions + 1)
+    end 
+
+    it "saves the previous value of an updated attribute" do
+      agency = valid_task.agency
+      valid_task.update_attribute(:agency, "NERC") 
+      expect(valid_task.previous_version.agency).to eq("ISO")
+    end
+  end
 end

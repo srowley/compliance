@@ -23,13 +23,19 @@ describe 'tasks/show.html.haml' do
   describe 'stakeholders section' do
 
     it "shows the owner" do
-      expect(rendered).to have_selector('ul li', text: "Owner: Blow, Joe")
+      expect_selector('ul li', text: "Owner: Blow, Joe")
     end
 
 
     it "has a list of subscribers" do
-      expect(rendered).to have_selector('ul li', text: "Sub, Second")
-      expect(rendered).to have_selector('ul li', text: "Sub, First")
+      expect_selector('ul li', text: "Sub, Second")
+      expect_selector('ul li', text: "Sub, First")
+    end
+  end
+
+  describe 'audit trail link' do
+    it "points to the audit record for this task" do
+      expect_selector("a[href='/tasks/#{@task.id}/versions']", text: "Audit Trail")
     end
   end
 end

@@ -23,6 +23,7 @@ Compliance::Application.routes.draw do
   resources :sessions
   
   resources :tasks do
+    resources :versions
     collection do
       get 'filter'
       get 'export'

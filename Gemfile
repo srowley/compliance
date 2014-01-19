@@ -37,6 +37,8 @@ gem 'pundit', '~>0.2.1'
 gem 'validates_timeliness', '~> 3.0' #ActiveRecord validations for dates
 # gem 'ice_cube' #library for handling recurring dates, here as a reminder for later
 
+# Audit trail functionality
+gem 'paper_trail', '~> 3.0.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 

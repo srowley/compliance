@@ -1,0 +1,28 @@
+%table
+  %thead
+    %tr
+      %td Agency
+      %td Facility 
+      %td Description
+      %td Due Date
+      %td Completed Date
+      %td Changed By User 
+      %td Change Date
+  %tbody
+    - @task.versions.each do |version|
+      %tr
+        %td= version.reify.agency
+        %td= version.reify.facility
+        %td= version.reify.description
+        %td= version.reify.due_date
+        %td= version.reify.completed_date
+        %td= User.find(version.whodunnit).full_name_reversed
+        %td= version.created_at
+    %tr
+      %td= @task.agency
+      %td= @task.facility
+      %td= @task.description
+      %td= @task.due_date
+      %td= @task.completed_date
+      %td N/A
+      %td N/A 
