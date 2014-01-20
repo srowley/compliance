@@ -46,16 +46,16 @@ describe TasksController do
   end
       
   describe 'GET #filter' do
-    it "returns the records that match a single filter criteria" do
+    it "returns the first page of  records that match a single filter criteria" do
       get :filter, 'filter' => { due_date: '2013-01-01' }
-      expect(assigns(:tasks)).to eq Task.filter(due_date: '2013-01-01' )
+      expect(assigns(:tasks)).to eq Task.filter(due_date: '2013-01-01' ).page(1)
     end
 
-    it "returns the records that match multiple filter criteria" do
+    it "returns the first page of records that match multiple filter criteria" do
       create(:task, completed_date: '2012-01-01')
       create(:task, completed_date: '2013-01-01')
       get :filter, 'filter' => { completed_date: '2012-01-01' }
-      expect(assigns(:tasks)).to eq Task.filter(completed_date: '2012-01-01')
+      expect(assigns(:tasks)).to eq Task.filter(completed_date: '2012-01-01').page(1)
     end
 
     it "renders the index template" do
@@ -65,9 +65,9 @@ describe TasksController do
   end
   
   describe 'GET #index' do
-    it 'returns a list of all Task objects' do
+    it 'returns the first page of all Task objects' do
       get :index
-      expect(assigns(:tasks)).to eq Task.all
+      expect(assigns(:tasks)).to eq Task.all.page(1)
     end
 
     it 'renders the index template' do

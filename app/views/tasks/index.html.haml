@@ -20,18 +20,23 @@
       %td
       - if current_user.has_role?(:editor, Task)
         %td
-  - @tasks.each do |task|
-    %tr
-      %td= User.with_role(:owner, task).first.full_name_reversed
-      %td= task.agency
-      %td= task.facility
-      %td= task.description
-      - if policy(task).update?
-        %td= link_to 'Edit', edit_task_path(task)
-      - else
-        %td= link_to 'View', task_path(task)
-      - if current_user.has_role?(:editor, Task)
-        %td= link_to 'Delete', task_path(task), method: :delete
+  %tbody
+    - @tasks.each do |task|
+      %tr
+        %td= User.with_role(:owner, task).first.full_name_reversed
+        %td= task.agency
+        %td= task.facility
+        %td= task.description
+        - if policy(task).update?
+          %td= link_to 'Edit', edit_task_path(task)
+        - else
+          %td= link_to 'View', task_path(task)
+        - if current_user.has_role?(:editor, Task)
+          %td= link_to 'Delete', task_path(task), method: :delete
 
+%br
+= paginate @tasks
+
+%br
 = link_to 'New Task', new_task_path
 = link_to 'Export Tasks', export_tasks_path(csv_params(params['filter']))

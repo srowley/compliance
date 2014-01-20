@@ -39,6 +39,10 @@ gem 'validates_timeliness', '~> 3.0' #ActiveRecord validations for dates
 
 # Audit trail functionality
 gem 'paper_trail', '~> 3.0.0'
+
+# Pagination
+gem 'kaminari', '~> 0.15'
+
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 

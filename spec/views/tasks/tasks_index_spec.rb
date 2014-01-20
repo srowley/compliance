@@ -7,9 +7,6 @@ describe 'tasks/index.html.haml' do
   end
 
   before(:each) do
-    #@user = create(:user)
-    #@first_task = create(:task_with_owner, description: 'First task', user: @user)
-    #@second_task = create(:task_with_owner, description: 'Second task', user: @user)
     @owner = build_stubbed(:user)
     @first_task = build_stubbed(:task, description: 'First task')
     @second_task = build_stubbed(:task, description: 'Second task')
@@ -18,6 +15,8 @@ describe 'tasks/index.html.haml' do
     allow(view).to receive(:current_user) { @owner }
     allow(view).to receive(:policy) { double(:policy, update?: true, destroy?: false) }
     tasks = Task.all
+    allow(tasks).to receive(:current_page) { 1 }
+    allow(tasks).to receive(:total_pages) { 1 }
     assign :tasks, tasks
   end
 
@@ -65,6 +64,9 @@ describe 'tasks/index.html.haml' do
         @second_role = build_stubbed_task_with_owner(@owner, @second_task)
         allow(User).to receive(:with_role) { @first_role.users }
         tasks = [@first_task, @second_task]
+        allow(tasks).to receive(:current_page) { 1 }
+        allow(tasks).to receive(:total_pages) { 1 }
+        allow(tasks).to receive(:limit_value) { 25 }
         assign :tasks, tasks
       end
 
@@ -72,6 +74,17 @@ describe 'tasks/index.html.haml' do
       render
       expect_selector("table tr td", text: 'First task')
       expect_selector("table tr td", text: 'Second task')
+    end
+
+    it 'is paginated' do
+      tasks = Kaminari.paginate_array([@first_task, @second_task]).page(1).per(1)
+      allow(tasks).to receive(:current_page) { 1 }
+      allow(tasks).to receive(:total_pages) { 2 }
+      allow(tasks).to receive(:limit_value) { 1 }
+      assign :tasks, tasks
+      render
+      expect_selector("nav.pagination")
+      expect_selector("span.current", text: "1")
     end
 
     describe 'each row in the task list table' do

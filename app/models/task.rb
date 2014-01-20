@@ -4,8 +4,9 @@ class Task < ActiveRecord::Base
   has_paper_trail
   
   validates :agency, :facility, :due_date, presence: true
- 
   validates_date :completed_date, allow_nil: true, :on_or_before => lambda { Date.current }
+
+  default_scope -> { order('due_date') }
 
   def self.filter(params, user = nil)
     result = self.all

@@ -9,11 +9,12 @@ class TasksController < ApplicationController
   
   def filter 
     @tasks = Task.filter(params['filter'], current_user)
+    @tasks = @tasks.page(params[:page])
     render 'index'
   end
 
   def index
-    @tasks = Task.all
+    @tasks = Task.page(params[:page])
   end
 
   def show
