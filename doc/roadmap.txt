@@ -25,6 +25,9 @@ Editors can read and write any task.
 Audit trail
 Users can see audit trail for a given record
 
+0.3.2
+Pagination
+
 Future
 Alerts on changes (submitted, due date/owner changed, deleted)
 Attach files
