@@ -37,5 +37,4 @@ Attach files
 Attach "reference links" to URLs with notes (e.g. "see section 2.1 of contract linked here")
 Allow contingent dates
 Copy/paste tasks
-Alerts on changes (submitted, due date/owner changed, deleted)
 Additional fields and/or tags
